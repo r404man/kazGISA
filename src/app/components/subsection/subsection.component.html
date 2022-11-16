@@ -1,0 +1,10 @@
+<div class="app-subsection">
+  Subsection-title: {{ subsection.title }}
+
+  <app-modal
+    [title]="subsection.title"
+    (newTitle)="newTitleHandler($event)"
+  ></app-modal>
+
+  <mat-icon (click)="removeSubsection()">remove</mat-icon>
+</div>

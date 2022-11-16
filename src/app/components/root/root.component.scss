@@ -1,0 +1,11 @@
+.root-component {
+    display: flex;
+    align-items: center;
+    h1 {
+        margin-bottom: 0px;
+    }
+}
+.sections {
+    display: flex;
+    flex-direction: column;
+}

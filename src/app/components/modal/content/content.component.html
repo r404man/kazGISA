@@ -1,0 +1,13 @@
+<div mat-dialog-content>
+  <p>Section Edit Form</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Change title</mat-label>
+    <input matInput [(ngModel)]="data.title" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.title" cdkFocusInitial>
+    Save
+  </button>
+</div>

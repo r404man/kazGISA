@@ -1,0 +1,21 @@
+<div class="app-section">
+  <h2>
+    Section-title: <span>{{ section.title }}</span>
+  </h2>
+
+  <mat-icon (click)="addSubsection()">add</mat-icon>
+
+  <app-modal
+    [title]="section.title"
+    (newTitle)="newTitleHandler($event)"
+  ></app-modal>
+
+  <mat-icon (click)="remove()">remove</mat-icon>
+</div>
+<div class="subsections" *ngFor="let subsection of subsections">
+  <app-subsection
+    [subsection]="subsection"
+    (removeSubsectionFromList)="handleRemoveSubsection($event)"
+    (changeTitle)="handleChangeTitle($event)"
+  ></app-subsection>
+</div>

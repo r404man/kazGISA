@@ -1,0 +1,18 @@
+<div class="root-component">
+  <h1>Root</h1>
+  <button
+    mat-icon-button
+    aria-label="Example icon button with a vertical three dot icon"
+    (click)="addSection()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+<div class="sections">
+  <ng-container *ngFor="let section of sections">
+    <app-section
+      [section]="section"
+      (removeSection)="handleRemoveSection($event)"
+    ></app-section>
+  </ng-container>
+</div>
