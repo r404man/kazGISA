@@ -11,7 +11,7 @@ import { TreeService } from 'src/app/services/tree.service';
 export class RootComponent implements OnInit {
   tree!: Observable<any>;
 
-  sections: Section[] = [];
+  sections!: Observable<Section[]>;
 
   constructor(private treeService: TreeService) {}
 
@@ -23,21 +23,13 @@ export class RootComponent implements OnInit {
     };
 
     this.treeService.addSection(section);
-
-    this.treeService.tree.asObservable().subscribe((data) => {
-      this.sections = data.root.sections;
-    });
   }
 
   handleRemoveSection(data: Section) {
     this.treeService.removeSection(data);
-    this.sections = this.sections.filter((item) => item.id !== data.id);
   }
 
   ngOnInit(): void {
-    this.tree = this.treeService.getTree();
-    this.tree.subscribe((data) => {
-      this.sections = data.sections;
-    });
+    this.sections = this.treeService.sections;
   }
 }

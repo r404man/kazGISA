@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, map, of, ReplaySubject } from 'rxjs';
 import { Section } from '../interfaces/Section';
 import { Subsection } from '../interfaces/Subsection';
 import { Root } from '../interfaces/Root';
@@ -8,98 +8,83 @@ import { Root } from '../interfaces/Root';
   providedIn: 'root',
 })
 export class TreeService {
-  tree = new BehaviorSubject<any>(null);
-
-  root: Root = JSON.parse(localStorage.getItem('tree')!)!.root;
+  sectionsSource = new BehaviorSubject<Section[]>([]);
+  sections = this.sectionsSource.asObservable();
 
   constructor() {}
 
-  getTree() {
-    let x = JSON.parse(localStorage.getItem('tree')!);
-    this.tree.next(x);
-    return of(x);
-  }
+  getTree() {}
 
-  addSection(section: Section) {
-    let x = JSON.parse(localStorage.getItem('tree')!);
-    x.sections.push(section);
-    console.log(x);
-    localStorage.setItem('tree', JSON.stringify(x));
-
-    this.tree.next({
-      root: { id: 0, title: 'Root', sections: [...x.sections] },
-    });
+  addSection(section: any) {
+    const currentSections = this.sectionsSource.value;
+    const updatedSections = [...currentSections, section];
+    this.sectionsSource.next(updatedSections);
   }
 
   removeSection(section: Section) {
-    let sections: any[] = [];
-
-    this.tree.asObservable().subscribe((data) => {
-      sections = data.root.sections.filter(
-        (sec: Section) => sec.id !== section.id
-      );
-    });
-
-    this.tree.next({ root: { id: 0, title: 'Root', sections: [...sections] } });
-    // localStorage.setItem('tree', JSON.stringify(this.root));
+    const currentSections = this.sectionsSource.value;
+    const updatedSections = currentSections.filter(
+      (item) => item.id !== section.id
+    );
+    this.sectionsSource.next(updatedSections);
   }
 
   editSection(section: Section, newTitle: string) {
-    let sections: any[] = [];
-    // this.tree.asObservable().subscribe((data) => {
-    //   sections = data.sections.map((item: Section) => {
-    //     console.log(item);
-    //   });
-    // });
-
-    // this.tree.next({ root: { id: 0, title: 'Root', section: [...sections] } });
-    // this.root.sections.map((item: Section) => {
-
-    //   if (item.id === section.id) {
-    //     section.title = newTitle;
-    //   }
-    //   return item;
-    // });
-
-    // localStorage.setItem('tree', JSON.stringify(this.root));
+    const currentSections = this.sectionsSource.value;
+    currentSections.filter((item) => item.id === section.id)[0].title =
+      newTitle;
+    const updatedSections = currentSections;
+    this.sectionsSource.next(updatedSections);
   }
 
   addSubsection(sectionId: number, subsection: Subsection) {
-    let x = JSON.parse(localStorage.getItem('tree')!);
-    x.sections = x.sections.filter((item: Section) => item.id === sectionId)[0];
-
-    console.log(x);
-    localStorage.setItem('tree', JSON.stringify(x));
-
-    this.tree.next({
-      root: { id: 0, title: 'Root', sections: [...x.sections] },
+    const currentSections = this.sectionsSource.value;
+    const updatedSections = currentSections.map((item) => {
+      if (item.id === sectionId) {
+        return { ...item, subsections: [...item.subsections, subsection] };
+      } else {
+        return { ...item };
+      }
     });
-
-    // this.root.sections
-    //   .filter((item) => item.id === sectionId)[0]!
-    //   .subsections.push(subsection);
-
-    // localStorage.setItem('tree', JSON.stringify(this.root));
+    this.sectionsSource.next(updatedSections);
   }
 
   removeSubsection(sectionId: number, subsection: Subsection) {
-    let x = this.root.sections.filter((item) => item.id === sectionId);
-    x[0].subsections = x[0].subsections.filter(
-      (item) => item.id !== subsection.id
-    );
+    const currentSections = this.sectionsSource.value;
+    const updatedSections = currentSections.map((item) => {
+      if (item.id === sectionId) {
+        return {
+          ...item,
+          subsections: [
+            ...item.subsections.filter((item) => item.id !== subsection.id),
+          ],
+        };
+      } else {
+        return { ...item };
+      }
+    });
 
-    localStorage.setItem('tree', JSON.stringify(this.root));
+    this.sectionsSource.next(updatedSections);
   }
 
   editSubsection(subsection: Subsection, sectionId: number) {
-    let x = this.root.sections.filter((item) => item.id === sectionId);
-    x[0].subsections = x[0].subsections.map((item) => {
-      if (item.id === subsection.id) {
-        return { ...item, title: subsection.title };
+    const currentSections = this.sectionsSource.value;
+    const updatedSections = currentSections.map((item) => {
+      if (item.id === sectionId) {
+        return {
+          ...item,
+          subsections: [
+            ...item.subsections.map((item) => {
+              if (item.id === subsection.id)
+                return { ...item, title: subsection.title };
+              return { ...item };
+            }),
+          ],
+        };
       }
-      return item;
+      return { ...item };
     });
 
-    localStorage.setItem('tree', JSON.stringify(this.root));
+    this.sectionsSource.next(updatedSections);
   }
 }

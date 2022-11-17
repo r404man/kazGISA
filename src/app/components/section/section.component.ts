@@ -21,7 +21,7 @@ export class SectionComponent implements OnInit {
       id: Math.random(),
       title: `${Math.random()}`,
     };
-    this.subsections.push(subsection);
+
     this.treeService.addSubsection(this.section.id, subsection);
   }
 
@@ -30,16 +30,14 @@ export class SectionComponent implements OnInit {
   }
 
   newTitleHandler(data: any) {
-    this.section.title = data;
     this.treeService.editSection(this.section, data);
   }
 
   handleRemoveSubsection(data: Subsection) {
     this.treeService.removeSubsection(this.section.id, data);
-    this.subsections = this.subsections.filter((item) => item.id !== data.id);
   }
 
-  handleChangeTitle(data: any) {
+  handleSubsectionTitle(data: any) {
     this.treeService.editSubsection(data, this.section.id);
   }
 

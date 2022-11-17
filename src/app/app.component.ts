@@ -14,18 +14,12 @@ export class AppComponent implements OnInit {
   constructor(private treeService: TreeService) {}
 
   ngOnInit(): void {
-    let tree = JSON.parse(localStorage.getItem('tree')!);
-
     let root: Root = {
       id: 0,
       title: 'Root',
       sections: [],
     };
 
-    if (tree === null) {
-      localStorage.setItem('tree', JSON.stringify(root));
-    } else {
-      this.treeService.tree.next(tree);
-    }
+    localStorage.setItem('tree', JSON.stringify(root));
   }
 }

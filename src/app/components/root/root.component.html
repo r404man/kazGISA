@@ -9,7 +9,7 @@
   </button>
 </div>
 <div class="sections">
-  <ng-container *ngFor="let section of sections">
+  <ng-container *ngFor="let section of sections | async">
     <app-section
       [section]="section"
       (removeSection)="handleRemoveSection($event)"
