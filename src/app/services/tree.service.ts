@@ -13,12 +13,26 @@ export class TreeService {
 
   constructor() {}
 
-  getTree() {}
+  getTree() {
+    const tree = JSON.parse(localStorage.getItem('tree')!);
+    if (tree === null) {
+      localStorage.setItem('tree', JSON.stringify([]));
+    } else {
+      localStorage.setItem('tree', JSON.stringify(tree));
+      this.sectionsSource.next(tree);
+    }
+  }
+
+  updateStorage() {
+    localStorage.setItem('tree', JSON.stringify(this.sectionsSource.value));
+  }
 
   addSection(section: any) {
     const currentSections = this.sectionsSource.value;
     const updatedSections = [...currentSections, section];
     this.sectionsSource.next(updatedSections);
+
+    this.updateStorage();
   }
 
   removeSection(section: Section) {
@@ -27,6 +41,8 @@ export class TreeService {
       (item) => item.id !== section.id
     );
     this.sectionsSource.next(updatedSections);
+
+    this.updateStorage();
   }
 
   editSection(section: Section, newTitle: string) {
@@ -35,6 +51,8 @@ export class TreeService {
       newTitle;
     const updatedSections = currentSections;
     this.sectionsSource.next(updatedSections);
+
+    this.updateStorage();
   }
 
   addSubsection(sectionId: number, subsection: Subsection) {
@@ -47,6 +65,8 @@ export class TreeService {
       }
     });
     this.sectionsSource.next(updatedSections);
+
+    this.updateStorage();
   }
 
   removeSubsection(sectionId: number, subsection: Subsection) {
@@ -65,6 +85,8 @@ export class TreeService {
     });
 
     this.sectionsSource.next(updatedSections);
+
+    this.updateStorage();
   }
 
   editSubsection(subsection: Subsection, sectionId: number) {
@@ -86,5 +108,7 @@ export class TreeService {
     });
 
     this.sectionsSource.next(updatedSections);
+
+    this.updateStorage();
   }
 }

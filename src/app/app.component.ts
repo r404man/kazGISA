@@ -14,12 +14,6 @@ export class AppComponent implements OnInit {
   constructor(private treeService: TreeService) {}
 
   ngOnInit(): void {
-    let root: Root = {
-      id: 0,
-      title: 'Root',
-      sections: [],
-    };
-
-    localStorage.setItem('tree', JSON.stringify(root));
+    this.treeService.getTree();
   }
 }
