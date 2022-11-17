@@ -19,8 +19,12 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { ContentComponent } from './components/modal/content/content.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { FormComponent } from './components/form/form.component';
+import { PhoneMaskDirective } from './directives/phone-mask.directive';
+import { AreaMaskDirective } from './directives/area-number-mask.directive';
 
 @NgModule({
   declarations: [
@@ -30,6 +34,9 @@ import { MatInputModule } from '@angular/material/input';
     SubsectionComponent,
     ModalComponent,
     ContentComponent,
+    FormComponent,
+    PhoneMaskDirective,
+    AreaMaskDirective,
   ],
   imports: [
     MatFormFieldModule,
@@ -44,6 +51,7 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatExpansionModule,
   ],
   providers: [
     { provide: MatDialogRef, useValue: {} },

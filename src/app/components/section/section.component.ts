@@ -14,6 +14,8 @@ export class SectionComponent implements OnInit {
 
   subsections: Subsection[] = [];
 
+  panelOpenState = false;
+
   constructor(private treeService: TreeService) {}
 
   addSubsection() {

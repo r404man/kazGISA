@@ -1,0 +1,75 @@
+<section>
+  <form [formGroup]="form" (submit)="onSubmit()">
+    <mat-form-field class="example-full-width">
+      <mat-label>Number</mat-label>
+      <input
+        type="number"
+        matInput
+        step="any"
+        formControlName="formNumber"
+        [errorStateMatcher]="matcher"
+        placeholder="0"
+      />
+      <!-- <mat-error
+        *ngIf="
+          formNumber.hasError('number') && !formNumber.hasError('required')
+        "
+      >
+        Please enter a valid number
+      </mat-error>
+      <mat-error *ngIf="numberFormControl.hasError('required')">
+        Number is <strong>required</strong>
+      </mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Номер участка</mat-label>
+      <input
+        type="text"
+        matInput
+        step="any"
+        formControlName="earthNumber"
+        [errorStateMatcher]="matcher"
+        placeholder=""
+        appAreaMask
+      />
+      <!-- <mat-error
+        *ngIf="
+          formNumber.hasError('number') && !formNumber.hasError('required')
+        "
+      >
+        Please enter a valid number
+      </mat-error>
+      <mat-error *ngIf="numberFormControl.hasError('required')">
+        Number is <strong>required</strong>
+      </mat-error> -->
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Телефон</mat-label>
+      <input
+        type="text"
+        matInput
+        step="any"
+        formControlName="phone"
+        [errorStateMatcher]="matcher"
+        placeholder="0"
+        appPhoneMask
+      />
+      <!-- <mat-error
+        *ngIf="
+          formNumber.hasError('number') && !formNumber.hasError('required')
+        "
+      >
+        Please enter a valid number
+      </mat-error>
+      <mat-error *ngIf="numberFormControl.hasError('required')">
+        Number is <strong>required</strong>
+      </mat-error> -->
+    </mat-form-field>
+    <button mat-flat-button color="primary" type="submit">Submit</button>
+  </form>
+
+  <div class="form-value">
+    {{ value | json }}
+  </div>
+</section>
